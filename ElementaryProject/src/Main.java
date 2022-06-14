@@ -9,7 +9,7 @@ public class Main {
 		while(true) {
 			System.out.println("==================================================");
 			System.out.println("메뉴 진입을 위한 번호를 입력하세요.");
-			System.out.println("1:로그인 2:회원가입 3:회원탈퇴 4:프로그램 종료");
+			System.out.println("1:로그인 2:회원가입 3:프로그램 종료");
 			System.out.println("==================================================");
 			str=sc.nextLine();
 			str=str.replaceAll("\\s", "");
@@ -23,9 +23,6 @@ public class Main {
 					SetMemInfo su=new SetMemInfo();
 				}
 				else if(num==3) {
-					showMenu.deleteAccount();
-				}
-				else if(num==4) {
 					System.out.println("프로그램을 종료합니다.");
 					break;
 				}
