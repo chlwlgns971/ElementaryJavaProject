@@ -1,42 +1,139 @@
-import java.util.Scanner;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
-public class DBConnect {
-	private String userID;
-	private String userPW;
-	
-	public static void main(String[] args) {
-		Scanner sc=new Scanner(System.in);
-		int num=0;
-		String str="";
-		while(true) {
-			System.out.println("==================================================");
-			System.out.println("메뉴 진입을 위한 번호를 입력하세요.");
-			System.out.println("1:로그인 2:회원가입 3:회원탈퇴 4:프로그램 종료");
-			System.out.println("==================================================");
-			str=sc.nextLine();
-			str=str.replaceAll("\\s", "");
-			ShowMenu showMenu=new ShowMenu();
-			try {
-				num=Integer.parseInt(str);
-				if(num==1) {
-					showMenu.login();
-				}
-				else if(num==2) {
-					SignUp su=new SignUp();
-				}
-				else if(num==3) {
-					showMenu.deleteAccount();
-				}
-				else if(num==4) {
-					System.out.println("프로그램을 종료합니다.");
-					break;
-				}
-				else System.out.println("올바른 메뉴 번호가 아닙니다.");
-				
-			} catch (Exception e) {
-				System.out.println("적절한 숫자를 입력해주세요.");
+public class DBConnect { //아이디와 비밀번호 체크
+	String driver = "oracle.jdbc.driver.OracleDriver";
+	String url = "jdbc:oracle:thin:@localhost:1521:xe";
+	String user = "testID";
+	String password = "java";
+	Connection conn=null;
+	Statement stat = null;
+	ResultSet rs=null;
+	boolean check=true;
+	public boolean checkID(String userID) {
+		try {
+			Class.forName(driver);
+			conn=DriverManager.getConnection(url, user, password);
+			stat=conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			String count="";
+			rs=stat.executeQuery("SELECT COUNT(MEM_ID) FROM MEMBER WHERE MEM_ID='"+userID+"'");
+			while(rs.next()) {
+				count=rs.getString(1);
 			}
-		
+			if(count.equals("0")) check=true;
+			else check=false;
+		}
+		catch (ClassNotFoundException e) {
+			System.out.println("jdbc driver 로딩 실패");
+		}
+		catch (SQLException e) {
+			System.out.println("오라클 연결 실패");
+		} 
+		finally {
+			try {
+				if(rs !=null) rs.close();
+				if(stat !=null) stat.close();
+				if(conn !=null) conn.close();
+			} 
+			catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return check;
+	}
+	public boolean checkIDandPW(String userID,String userPW) {
+		try {
+			Class.forName(driver);
+			conn=DriverManager.getConnection(url, user, password);
+			stat=conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			String ID="";
+			String PW="";
+			rs=stat.executeQuery("SELECT COUNT(MEM_ID) FROM MEMBER WHERE MEM_ID='"+userID+"'");
+			while(rs.next()) {
+				ID=rs.getString(1);
+			}
+			if(ID.equals("0")) {
+				check=false;
+			}
+			else {
+				rs=stat.executeQuery("SELECT MEM_PW FROM MEMBER WHERE MEM_ID='"+userID+"'");
+				while(rs.next()) {
+					PW=rs.getString(1);
+				}
+				if(PW.equals(userPW)) check=true;
+				else check=false;
+			}
+		}	
+		catch (ClassNotFoundException e) {
+			System.out.println("jdbc driver 로딩 실패");
+		}
+		catch (SQLException e) {
+			System.out.println("오라클 연결 실패");
+		} 
+		finally {
+			try {
+				if(rs !=null) rs.close();
+				if(stat !=null) stat.close();
+				if(conn !=null) conn.close();
+			} 
+			catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return check;
+	}
+	public void delete(String userID) {
+		try {
+			Class.forName(driver);
+			conn=DriverManager.getConnection(url, user, password);
+			stat=conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			rs=stat.executeQuery("DELETE FROM MEMBER WHERE MEM_ID='"+userID+"'");
+			System.out.println("회원탈퇴에 성공하였습니다.");
+		}	
+		catch (ClassNotFoundException e) {
+			System.out.println("jdbc driver 로딩 실패");
+		}
+		catch (SQLException e) {
+			System.out.println("오라클 연결 실패");
+		} 
+		finally {
+			try {
+				if(rs !=null) rs.close();
+				if(stat !=null) stat.close();
+				if(conn !=null) conn.close();
+			} 
+			catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}	
+	}
+	public void signUp(String userID, String passWord, String name, String regNo1, String addr, String userPN) {
+		try {
+			Class.forName(driver);
+			conn=DriverManager.getConnection(url, user, password);
+			stat=conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			rs=stat.executeQuery("INSERT INTO MEMBER VALUES('"+userID+"','"+passWord+"','"+name+"'"
+					+ ",'"+regNo1+"','"+addr+"','"+userPN+"')");
+			System.out.println("회원가입이 완료되었습니다.");
+		}	
+		catch (ClassNotFoundException e) {
+			System.out.println("jdbc driver 로딩 실패");
+		}
+		catch (SQLException e) {
+			System.out.println("오라클 연결 실패");
+		} 
+		finally {
+			try {
+				if(rs !=null) rs.close();
+				if(stat !=null) stat.close();
+				if(conn !=null) conn.close();
+			} 
+			catch (Exception e2) {
+				e2.printStackTrace();
+			}
 		}	
 	}
 }

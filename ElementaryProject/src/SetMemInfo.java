@@ -1,11 +1,6 @@
 import java.util.Scanner;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.ResultSet;
 
-public class SignUp { //회원가입 클래스 
+public class SetMemInfo { //회원가입 클래스 
 	private String userID; //아이디
 	private String passWord; //비밀번호
 	private String name; //이름
@@ -14,74 +9,40 @@ public class SignUp { //회원가입 클래스
 	private String userPN; //휴대폰번호
 	Scanner sc=new Scanner(System.in);
 	String str="";
-	String driver = "oracle.jdbc.driver.OracleDriver";
-	String url = "jdbc:oracle:thin:@localhost:1521:xe";
-	String user = "testID";
-	String password = "java";
-	Connection conn=null;
-	Statement stat = null;
-	ResultSet rs=null;
-	SignUp(){
+	DBConnect dbc=new DBConnect();
+	SetMemInfo(){
 		setID();
 		setPW();
 		setName();
 		setRegNo1();
 		setAddr();
 		setPN();
-		sendToSQL();
+		dbc.signUp(this.userID, this.passWord, this.name, this.regNo1, this.addr, this.userPN);
 	}
 	public void setID() {
-		try {
-			Class.forName(driver);
-			conn=DriverManager.getConnection(url, user, password);
-			stat=conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			while(true) {
-				System.out.println("==================================================");
-				System.out.println("(아이디는 공백이 허용되지 않으며 최대 10글자만 입력가능합니다.)");
-				System.out.print("(필수)가입할 아이디를 입력해주세요: ");
-				str=sc.nextLine();
-				str=str.replaceAll("\\s", ""); //공백제거
-				if(str.equals("")) {
-					System.out.println("아이디는 공백일 수 없습니다.");
-					str="";
-				}
-				else if(str.length()>10) {
-					System.out.println("10글자를 초과하였습니다.");
-					str="";
-				}
-				else {
-					String count="";
-					rs=stat.executeQuery("SELECT COUNT(MEM_ID) FROM MEMBER WHERE MEM_ID='"+str+"'");
-					while(rs.next()) {
-						count=rs.getString(1);
-					}
-					if(count.equals("0")) {
-						this.userID=str;
-						str="";
-						break;
-					}
-					else System.out.println("중복된 아이디입니다.");
-					
-				}
+		while(true) {
+			System.out.println("==================================================");
+			System.out.println("(아이디는 공백이 허용되지 않으며 최대 10글자만 입력가능합니다.)");
+			System.out.print("(필수)가입할 아이디를 입력해주세요: ");
+			str=sc.nextLine();
+			str=str.replaceAll("\\s", ""); //공백제거
+			if(str.equals("")) {
+				System.out.println("아이디는 공백일 수 없습니다.");
+				str="";
 			}
-		}	
-		catch (ClassNotFoundException e) {
-			System.out.println("jdbc driver 로딩 실패");
+			else if(str.length()>10) {
+				System.out.println("10글자를 초과하였습니다.");
+				str="";
+			}
+			else {
+				if(dbc.checkID(str)) {
+					this.userID=str;
+					str="";
+					break;
+				}
+				else System.out.println("중복된 아이디입니다.");
+			}
 		}
-		catch (SQLException e) {
-			System.out.println("오라클 연결 실패");
-		} 
-		finally {
-			try {
-				if(rs !=null) rs.close();
-				if(stat !=null) stat.close();
-				if(conn !=null) conn.close();
-			} 
-			catch (Exception e2) {
-				e2.printStackTrace();
-			}
-		}	
-		
 	}
 	public void setPW() {
 		while(true) {
@@ -169,31 +130,5 @@ public class SignUp { //회원가입 클래스
 			this.addr=str;
 			str="";
 		}
-	}
-	public void sendToSQL() {
-		try {
-			Class.forName(driver);
-			conn=DriverManager.getConnection(url, user, password);
-			stat=conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			rs=stat.executeQuery("INSERT INTO MEMBER VALUES('"+this.userID+"','"+this.passWord+"','"+this.name+"'"
-					+ ",'"+this.regNo1+"','"+this.addr+"','"+this.userPN+"')");
-			System.out.println("회원가입이 완료되었습니다.");
-		}	
-		catch (ClassNotFoundException e) {
-			System.out.println("jdbc driver 로딩 실패");
-		}
-		catch (SQLException e) {
-			System.out.println("오라클 연결 실패");
-		} 
-		finally {
-			try {
-				if(rs !=null) rs.close();
-				if(stat !=null) stat.close();
-				if(conn !=null) conn.close();
-			} 
-			catch (Exception e2) {
-				e2.printStackTrace();
-			}
-		}	
 	}
 }
