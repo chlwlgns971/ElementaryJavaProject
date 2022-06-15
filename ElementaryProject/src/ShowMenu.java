@@ -25,13 +25,13 @@ public class ShowMenu {
 					this.userID="";
 					break check;
 				}
-				else if(str.equals("n")) userMenu();
+				else if(str.equals("n")) userPage();
 				else System.out.println("올바른 값을 입력해주세요.");
 			}
 		}
 		else {
 			System.out.println("비밀번호가 일치하지 않습니다.");
-			userMenu();
+			userPage();
 		}
 	}
 	public void login() {
@@ -45,11 +45,11 @@ public class ShowMenu {
 		if(dbc.checkIDandPW(id,pw)) {
 			this.userID=id;
 			System.out.println("로그인에 성공하였습니다.");
-			userMenu();
+			userPage();
 		}
 		else System.out.println("아이디 혹은 비밀번호가 일치하지 않습니다.");
 	}
-	public void userMenu() {
+	public void userPage() {
 		while(true) {
 			System.out.println("=================================================================");
 			System.out.println("1:예약 2:나의 예약조회 3:회원정보수정 4:회원탈퇴 5:메인화면으로 돌아가기(로그아웃)");
@@ -57,7 +57,13 @@ public class ShowMenu {
 			selectMenu=sc.nextLine();
 			try {
 				num=Integer.parseInt(selectMenu);
-				if(num==4) {
+				if(num==1) {
+					//예약메소드 필요
+				}
+				else if(num==2) {
+					dbc.searchRsv(this.userID);
+				}
+				else if(num==4) {
 					deleteAccount();
 					break;
 				}
