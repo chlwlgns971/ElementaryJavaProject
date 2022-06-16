@@ -39,6 +39,16 @@ public class DBConnection {
 		}
 		return conn;
 	}
+	public static Statement getStatement() {
+		Statement stat=null;
+		try {
+			Connection conn=getConnection();
+			stat=conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+		}catch(Exception e) {
+			System.out.println("연결실패:"+e.getMessage());
+		}
+		return stat;
+	}
 	//데이터베이스 연결을 해제하는 메서드
 	public static void close(ResultSet rs, Statement stat, Connection conn) {
 		try {
