@@ -1,7 +1,6 @@
 import java.util.Scanner;
 
 public class Main {
-	//깃 커밋 테스트
 	public static void main(String[] args) {
 		Scanner sc=new Scanner(System.in);
 		int num=0;
