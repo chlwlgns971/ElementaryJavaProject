@@ -25,9 +25,10 @@ public class ShowMenu {
 					this.userID="";
 					break check;
 				}
-				else if(str.equals("n")) userPage();
+				else if(str.equals("n")) break check;
 				else System.out.println("올바른 값을 입력해주세요.");
 			}
+			userPage();
 		}
 		else {
 			System.out.println("비밀번호가 일치하지 않습니다.");
@@ -42,7 +43,15 @@ public class ShowMenu {
 		System.out.println("비밀번호를 입력하세요: ");
 		pw=sc.nextLine();
 		System.out.println("==================================================");
-		if(dbc.checkIDandPW(id,pw)) {
+		if(id.equals("admin")) {
+			if(dbc.checkIDandPW(id,pw)) {
+				this.userID=id;
+				System.out.println("관리자 로그인에 성공하였습니다.");
+				//userPage();
+			}
+			else System.out.println("아이디 혹은 비밀번호가 일치하지 않습니다.");
+		}
+		else if(dbc.checkIDandPW(id,pw)) {
 			this.userID=id;
 			System.out.println("로그인에 성공하였습니다.");
 			userPage();
@@ -64,6 +73,7 @@ public class ShowMenu {
 					dbc.searchRsv(this.userID);
 				}
 				else if(num==4) {
+					num=0;
 					deleteAccount();
 					break;
 				}
