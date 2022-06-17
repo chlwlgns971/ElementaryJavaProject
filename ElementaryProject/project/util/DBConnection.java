@@ -7,13 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DBConnection {
-	static {
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-		}catch(ClassNotFoundException e) {
-			System.out.println("클래스 로드 실패:"+e.getMessage());
-		}
-	}
 //	//Singleton 클래스로 만들기 위해서 생성자를 private로 선언
 //	private DBConnection() {};
 //	//하나의 객체를 주소로 저장할 변수 선언
@@ -32,6 +25,11 @@ public class DBConnection {
 		String url = "jdbc:oracle:thin:@192.168.143.25:1521:xe";
 		String user = "RENTCAR";
 		String password = "java";
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+		}catch(ClassNotFoundException e) {
+			System.out.println("클래스 로드 실패:"+e.getMessage());
+		}
 		try {
 			conn=DriverManager.getConnection(url, user, password);
 		}catch(Exception e) {

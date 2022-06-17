@@ -53,7 +53,4 @@ public class DAO {
 			System.out.println("해제 실패:"+e.getMessage());
 		}
 	}
-	public List<Class> getList(){
-		
-	}
 }

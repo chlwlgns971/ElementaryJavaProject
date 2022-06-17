@@ -7,7 +7,7 @@ public class SignUpDTO {
 	private String regNo; //주민등록번호 앞자리
 	private String addr; //주소
 	private String userPH; //휴대폰번호
-	SignUpDTO(String id, String pw, String name, String regNo, String addr, String ph){
+	public SignUpDTO(String id, String pw, String name, String regNo, String addr, String ph){
 		this.userID=id;
 		this.passWord=pw;
 		this.name=name;
