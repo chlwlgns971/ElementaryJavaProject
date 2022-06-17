@@ -22,7 +22,7 @@ public class LoginUI {
 				this.userID=id;
 				System.out.println("관리자 로그인에 성공하였습니다.");
 				ManageMenu mm=new ManageMenu();
-				mm.ShowManagerSelect();
+				mm.manageMenu();
 			}
 			else System.out.println("아이디 혹은 비밀번호가 일치하지 않습니다.");
 		}
