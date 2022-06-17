@@ -13,7 +13,7 @@ public class ManageUpdate {
 		while (true) {
 			System.out.println("===================================================================");
 			System.out.println("=============================관리자 페이지============================");
-			System.out.println("1.회원테이블 수정 2.지점테이블 수정 3.차량테이블 수정 4.모델테이블 수정 5.로그아웃");
+			System.out.println("1.회원테이블 수정 2.지점테이블 수정 3.차량테이블 수정 4.모델테이블 수정 5.뒤로가기");
 			System.out.println("===================================================================");
 			str = sc.nextLine();
 			str = str.replaceAll("\\s", "");
@@ -164,36 +164,62 @@ public class ManageUpdate {
 	}
 
 	public void ManagerCarUpdateInfo() {
-		while (true) {
-			System.out.println("==============================");
-			System.out.println("=======차량테이블 수정 페이지=======");
-			System.out.println("1. 대여료 변경  2. 뒤로가기  ");
-			System.out.println("==============================");
-			str = sc.nextLine();
-			str = str.replaceAll("\\s", "");
-			try {
-				num = Integer.parseInt(str);
+	      while (true) {
+	         System.out.println("===========================================");
+	         System.out.println("=============차량테이블 수정 페이지===============");
+	         System.out.println("1. 대여료 변경  2. 컬럼 삽입  3. 컬럼 삭제  4. 뒤로가기  ");
+	         System.out.println("===========================================");
+	         str = sc.nextLine();
+	         str = str.replaceAll("\\s", "");
+	         try {
+	            num = Integer.parseInt(str);
 
-				if (num == 1) {
-					System.out.println("차량번호를 입력하세요.");
-					String no = sc.nextLine();
-					System.out.println("변경할 대여료 값을 입력하세요.");
-					String pay = sc.nextLine();
-					str = "update car set car_pay = '" + pay + "' where car_no = '" + no + "'";
-					manageDao.update(str);
-					System.out.println("차량 대여료가 변경되었습니다.");
+	            if (num == 1) {
+	               System.out.println("차량번호를 입력하세요.");
+	               String no = sc.nextLine();
+	               System.out.println("변경할 대여료 값을 입력하세요.");
+	               String pay = sc.nextLine();
+	               str = "update car set car_pay = '" + pay + "' where car_no = '" + no + "'";
+	               manageDao.update(str);
+	               System.out.println("차량 대여료가 변경되었습니다.");
 
-				} else if (num == 2) {
-					break;
+	            }else if (num == 2) {
+	               System.out.println("차량번호를 입력하세요.");
+	               String no = sc.nextLine();
+	               System.out.println("차량종류를 입력하세요.");
+	               String cls = sc.nextLine();
+	               System.out.println("대여료를 입력하세요.");
+	               String pay = sc.nextLine();
+	               System.out.println("차량색상을 입력하세요.");
+	               String col = sc.nextLine();
+	               System.out.println("지점번호를 입력하세요.");
+	               String bno = sc.nextLine();
+	               System.out.println("차량명을 입력하세요.");
+	               String name = sc.nextLine();
+	               str = "insert into car (car_no, car_cls, car_pay, car_col, car_bno, car_name) "
+	                  + "values ('"+ no + "','"+ cls + "'," + pay + ",'" + col + "','" + bno + "','" + name + "')";
+	               manageDao.update(str);
+	               System.out.println("차량테이블에 컬럼이 삽입되었습니다.");
 
-				} else
-					System.out.println("올바른 메뉴 번호가 아닙니다.");
+	            } else if (num == 3) {
+	               System.out.println("차량번호를 입력하세요.");
+	               String no = sc.nextLine();
+	               str = "delete from car where car_no =  '" + no + "'";
+	               manageDao.update(str);
+	               System.out.println("차량테이블에 컬럼이 삭제되었습니다.");
 
-			} catch (Exception e) {
-				System.out.println("적절한 숫자를 입력해주세요.");
-			}
-		}
-	}
+	            }
+	            else if (num == 4) {
+	               break;
+
+	            } else
+	               System.out.println("올바른 메뉴 번호가 아닙니다.");
+
+	         } catch (Exception e) {
+	            System.out.println("적절한 숫자를 입력해주세요.");
+	         }
+	      }
+	   }
 
 	public void ManagerModelUpdateInfo() {
 		while (true) {
