@@ -32,16 +32,53 @@ public class UserPage {
 					//예약메소드 필요
 				}
 				else if(num==2) {
+					String select="";// 메뉴선택용 변수
+					int selectNum=0;//select변수 정수변환용
 					rsvResult=userDao.searchRsv(userDto.getLoginID());
-					System.out.println("===================================================================================");
-					System.out.println("   예약번호      이름     차번호    대여차종   지점   결제금액      대여일         반납일");
-					System.out.println("===================================================================================");
+					System.out.println("========================================================================================================");
+					System.out.println("예약번호\t\t|이름\t|차번호\t\t|대여차종\t|지점\t|결제금액\t\t|대여일\t\t|반납일\t\t|");
+					System.out.println("========================================================================================================");
 					Set<String> result=rsvResult.keySet();
 					Iterator<String> iter=result.iterator();
 					while(iter.hasNext()) {
 						String key=iter.next();
 						String value=rsvResult.get(key);
 						System.out.println(key+value);
+					}
+					System.out.println("1.삭제 2.확인 ");
+					select=sc.nextLine();
+					try {
+						selectNum=Integer.parseInt(select);
+						switch(selectNum) {
+						case 1:
+								if(rsvResult.size()==0) {
+									System.out.println("예약내역이 없습니다.");
+									break;
+								}
+								else {
+									while(iter.hasNext()) {
+										String key=iter.next();
+										String value=rsvResult.get(key);
+										System.out.println(key+value);
+									}
+									while(true) {
+										System.out.println("삭제할 예약코드를 입력해주세요:");
+										select=sc.nextLine();
+										if(rsvResult.get(select)=="") {
+											System.out.println("잘못된 예약번호입니다.");
+										}
+										else {
+											userDao.deleteRsv(select);
+											break;
+										}
+									}
+									break;
+								}
+						case 2:
+							break;
+						}	
+					}catch(Exception e) {
+						System.out.println("올바르지 않은 값입니다.");
 					}
 				}
 				else if(num==3) {
@@ -96,27 +133,40 @@ public class UserPage {
 		String select="";
 		int num=0;
 		String res="";
+		String edit="";
 		System.out.println("==================================================");
 		System.out.println("변경할 항목을 선택해주세요.");
 		System.out.println("1.핸드폰번호  2.주소  3.비밀번호");
 		System.out.println("==================================================");
 		select=sc.nextLine();
 		try {
-			num=Integer.parseInt(selectMenu);
+			num=Integer.parseInt(select);
 			if(num==1) {
-				res = "update member set mem_hp = '" + y + "' where mem_id = '" +id+ "'";
-			    userDao.updateMemberHP(res);
+				System.out.print("바꿀 핸드폰 번호를 입력해주세요(000-0000-0000 형태):");
+				edit=sc.nextLine();
+				res = "update member set mem_hp = '" + edit + "' where mem_id = '" +id+ "'";
+			    userDao.editUserInfo(res);
 			    System.out.println("변경이 완료되었습니다.");
+			    edit="";
+			    res="";
 			}
 			else if(num==2) {
-				res = "update member set mem_add = '" + y + "' where mem_id = '" +id+ "'";
-			    userDao.updateMemberAdd(res);
+				System.out.print("바꿀 주소를 입력해주세요:");
+				edit=sc.nextLine();
+				res = "update member set mem_add = '" + edit + "' where mem_id = '" +id+ "'";
+			    userDao.editUserInfo(res);
 			    System.out.println("변경이 완료되었습니다.");
+			    edit="";
+			    res="";
 			}
 			else if(num==3) {
-				res = "update member set mem_pw = '" + y + "' where mem_id = '" +id+ "'";
-			    userDao.updateMemberPW(res);
+				System.out.print("바꿀 비밀번호를 입력해주세요:");
+				edit=sc.nextLine();
+				res = "update member set mem_pw = '" + edit + "' where mem_id = '" +id+ "'";
+			    userDao.editUserInfo(res);
 			    System.out.println("변경이 완료되었습니다.");
+			    edit="";
+			    res="";
 			}
 			else System.out.println("올바른메뉴를 선택해주세요");
 		}

@@ -37,12 +37,26 @@ public class UserPageDAO extends DBConnection {
 		}
 		return check;
 	}
-	public void delete(String userID) {
+	public void delete(String str) {
 		try {
 			conn=getConnection();
 			stat=getStatement();
-			rs=stat.executeQuery("DELETE FROM MEMBER WHERE MEM_ID='"+userID+"'");
+			rs=stat.executeQuery("DELETE FROM MEMBER WHERE MEM_ID='"+str+"'");
 			System.out.println("회원탈퇴에 성공하였습니다.");
+		}	
+		catch (SQLException e) {
+			System.out.println("오라클 연결 실패");
+		} 
+		finally {
+			close(rs,stat,conn);
+		}	
+	}
+	public void deleteRsv(String str) {
+		try {
+			conn=getConnection();
+			stat=getStatement();
+			rs=stat.executeQuery("DELETE FROM RSV WHERE RSV_NO='"+str+"'");
+			System.out.println("예약삭제 완료.");
 		}	
 		catch (SQLException e) {
 			System.out.println("오라클 연결 실패");
@@ -57,9 +71,9 @@ public class UserPageDAO extends DBConnection {
 			conn=getConnection();
 			stat=getStatement();
 			rs=stat.executeQuery("SELECT RSV_NO, REPLACE(RSV_ID,'"+id+"',(SELECT MEM_NAME FROM MEMBER WHERE MEM_ID='"+id+"')), RSV_CNO"
-					+ ", CAR_NAME,REPLACE(RSV_BNO, RSV_BNO, (SELECT BRA_NAME FROM BRANCH INNER JOIN RSV ON(RSV_BNO=BRA_NO) WHERE RSV_ID='"+id+"'))"
-							+ ", RSV_PAY, TO_CHAR(RSV_DATE,'YYYY-MM-DD'), TO_CHAR(RSV_RET,'YYYY-MM-DD') FROM RSV INNER JOIN CAR ON(CAR_NO=RSV_CNO) WHERE RSV_ID='"+id+"'"
-									+ "ORDER BY RSV_NO DESC");
+					+ ", CAR_NAME, BRA_NAME, RSV_PAY, TO_CHAR(RSV_DATE,'YYYY-MM-DD'), TO_CHAR(RSV_RET,'YYYY-MM-DD') "
+					+ "FROM RSV INNER JOIN CAR ON(CAR_NO=RSV_CNO) INNER JOIN BRANCH ON(BRA_NO=RSV_BNO)"
+					+ "WHERE RSV_ID='"+id+"'ORDER BY RSV_NO DESC");
 			//column갯수 구하기
 			ResultSetMetaData rsmd = rs.getMetaData();
 			int columnCount = rsmd.getColumnCount();
@@ -71,7 +85,7 @@ public class UserPageDAO extends DBConnection {
 						key=rs.getNString(i);
 					}
 					else {
-						str+=" | "+rs.getString(i);
+						str+=" \t| "+rs.getString(i);
 					}
 				}
 				resultMap.put(key, str);
@@ -80,7 +94,7 @@ public class UserPageDAO extends DBConnection {
 			}
 		}
 		catch (SQLException e) {
-			System.out.println("오라클 연결 실패");
+			System.out.println("오라클 연결 실패: "+e.getMessage());
 		} 
 		finally {
 			close(rs,stat,conn);
@@ -88,7 +102,7 @@ public class UserPageDAO extends DBConnection {
 		return resultMap;	
 	}
 	//회원 휴대폰번호 변경
-	public void updateMemberHP(String res) {
+	public void editUserInfo(String res) {
 		try {
 			conn=getConnection();
 			stat=getStatement();
@@ -97,26 +111,5 @@ public class UserPageDAO extends DBConnection {
 			System.out.println("오라클 연결 실패");
 		}
 	}
-	// 회원 주소 변경
-  	public void updateMemberAdd(String res) {
-  		try {
-  			conn=getConnection();
-			stat=getStatement();
-			rs = stat.executeQuery(res);
 
-  		}catch (SQLException e) {
-  			System.out.println("오라클 연결 실패");
-  		}
-  	}
-  	// 회원 비밀번호 변경
-    public void updateMemberPW(String res) {
-    	try {
-    		conn=getConnection();
-			stat=getStatement();
-    		rs = stat.executeQuery(res);
-
-    	}catch (SQLException e) {
-    		System.out.println("오라클 연결 실패");
-      	}
-    }
 }

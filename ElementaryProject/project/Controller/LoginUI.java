@@ -21,7 +21,8 @@ public class LoginUI {
 			if(login.checkIDandPW(id,pw)) {
 				this.userID=id;
 				System.out.println("관리자 로그인에 성공하였습니다.");
-				//관리자페이지;
+				ManageMenu mm=new ManageMenu();
+				mm.ShowManagerSelect();
 			}
 			else System.out.println("아이디 혹은 비밀번호가 일치하지 않습니다.");
 		}
