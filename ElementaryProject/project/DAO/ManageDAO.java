@@ -64,6 +64,36 @@ public class ManageDAO extends DBConnection {
 
 		} catch (SQLException e) {
 			System.out.println("오라클 연결 실패");
+			e.printStackTrace();
+		} finally {
+			close(rs, stat, conn);
+		}
+	}
+	
+	public void selectCar2(String res) {
+		try {
+			conn = getConnection();
+			stat = getStatement();
+			rs = stat.executeQuery(res);
+			while (rs.next()) {
+				System.out.print(rs.getString("BRA_NO"));
+				System.out.print(" ");
+				System.out.print(rs.getString("CAR_NO"));
+				System.out.print(" ");
+				System.out.print(rs.getString("CAR_CLS"));
+				System.out.print(" ");
+				System.out.print(rs.getString("CAR_PAY"));
+				System.out.print(" ");
+				System.out.print(rs.getString("CAR_COL"));
+				System.out.print(" ");
+				System.out.print(rs.getString("CAR_NAME"));
+				System.out.println();
+			}
+			// rs = stat.executeQuery(sql); '명령문'
+
+		} catch (SQLException e) {
+			System.out.println("오라클 연결 실패");
+			e.printStackTrace();
 		} finally {
 			close(rs, stat, conn);
 		}

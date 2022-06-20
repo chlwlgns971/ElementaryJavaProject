@@ -61,6 +61,7 @@ public class ManageSelect {
 					String str = "select * from member where mem_id != 'admin'";
 					manageDao.selectMember(str);
 
+					
 				} else if (num == 2) {
 					System.out.println("이름을 입력하세요.");
 					String name = sc.nextLine();
@@ -125,10 +126,10 @@ public class ManageSelect {
 
 	public void ManagerCarShowInfo() {
 		while (true) {
-			System.out.println("==============================");
-			System.out.println("=======차량테이블 조회 페이지=======");
-			System.out.println("1. 전체 차량 조회  2. 뒤로가기  ");
-			System.out.println("==============================");
+			System.out.println("=======================================");
+			System.out.println("===========차량테이블 조회 페이지=============");
+			System.out.println("1. 전체 차량 조회  2. 지점별 차량 조회  3. 돌아가기  ");
+			System.out.println("=======================================");
 			str = sc.nextLine();
 			str = str.replaceAll("\\s", "");
 			try {
@@ -141,7 +142,16 @@ public class ManageSelect {
 					String str = "select* from CAR";
 					manageDao.selectCar(str);
 
-				} else if (num == 2) {
+				} else if (num == 2){
+					System.out.println("지점번호를 입력하세요.");
+					String no = sc.nextLine();
+					System.out.println("===============================");
+					System.out.println("지점번호 차량번호  차종  대여료  색상 차량명");
+					System.out.println("===============================");
+					String str = "select  bra_no, car_no, car_cls, car_pay, car_col, car_name "
+							+ "from branch, car where bra_no = car_bno and bra_no = '" + no + "'";
+					manageDao.selectCar2(str);
+				} else if (num == 3) {
 					System.out.println("프로그램을 종료합니다.");
 					break;
 
