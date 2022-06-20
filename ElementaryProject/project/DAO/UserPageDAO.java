@@ -50,7 +50,7 @@ public class UserPageDAO extends DBConnection {
 			rs = stat.executeQuery("DELETE FROM MEMBER WHERE MEM_ID='" + str + "'");
 			System.out.println("회원탈퇴에 성공하였습니다.");
 		} catch (SQLException e) {
-			System.out.println("오라클 연결 실패");
+			System.out.println("오라클 연결 실패"+e.getMessage());
 		} finally {
 			close(rs, stat, conn);
 		}

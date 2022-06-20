@@ -1,5 +1,6 @@
 package Controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -14,6 +15,7 @@ import DTO.UserPageDTO;
 
 public class UserPage {
 	String selectMenu;
+	LocalDate now = LocalDate.now();
 	Scanner sc = new Scanner(System.in);
 	UserPageDAO userDao = new UserPageDAO();
 	UserPageDTO userDto;
@@ -115,7 +117,7 @@ public class UserPage {
 				String str = sc.nextLine();
 				str = str.replaceAll("\\s", "");// 공백제거
 				if (str.equals("y")) {
-					userDao.delete(this.userID);
+					userDao.delete(id);
 					System.out.println("삭제가 완료되었습니다. 메인화면으로 돌아갑니다.");
 					this.userID = "";
 					checkDelete = true;
@@ -181,6 +183,8 @@ public class UserPage {
 
 	public void makeRsv() {
 		Map<String, String> map = new HashMap<String, String>();
+		int monthValue = now.getMonthValue();
+		int dayOfMonth = now.getDayOfMonth();
 		String regno="";
 		int a=0;
 		int b=0;
@@ -201,7 +205,7 @@ public class UserPage {
 		while(true) {
 			System.out.print("대여 달을 입력하세요 ");
 			a = sc.nextInt();
-			if(a>12 || a<1) {
+			if((a>12 || a<1)||(a<monthValue)){
 				System.out.println("잘못된 값입니다.");
 			}
 			else break;
@@ -212,12 +216,20 @@ public class UserPage {
 			if(b>31 || b<1) {
 				System.out.println("잘못된 값입니다.");
 			}
-			else break;
+			
+			else {
+				if(a==monthValue) {
+					if(b<dayOfMonth) {
+						System.out.println("잘못된 값입니다.");
+					}
+					else break;
+				}
+			}
 		}
 		while(true) {
 			System.out.print("반납할 딜을 입력하세요 ");
 			c = sc.nextInt();
-			if(c>12 || c<1) {
+			if((c>12 || c<1)||(c<a)) {
 				System.out.println("잘못된 값입니다.");
 			}
 			else break;
@@ -225,7 +237,7 @@ public class UserPage {
 		while(true) {
 			System.out.print("반납 일을 입력하세요 ");
 			d = sc.nextInt();
-			if(d>31 || d<1) {
+			if((d>31 || d<1)||(d<b)) {
 				System.out.println("잘못된 값입니다.");
 			}
 			else break;
