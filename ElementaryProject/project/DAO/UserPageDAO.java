@@ -182,7 +182,7 @@ public class UserPageDAO extends DBConnection {
 			if (sm2 < 10) {
 				s1 = "0" + sm2;
 			} else {
-				s1 = "" + s1;
+				s1 = "" + sm2;
 			}
 
 			if (sd2 < 10) {
@@ -190,7 +190,7 @@ public class UserPageDAO extends DBConnection {
 			} else {
 				s2 = "" + sd2;
 			}
-
+			
 			String sqlStr = "insert into rsv(rsv_date, rsv_ret, rsv_pay, rsv_bno, rsv_cno, rsv_id, rsv_no)   "
 					+ "values ('2022-" + sm2 + "-" + sd2 + "'," + "'2022-" + em2 + "-" + ed2 + "'," + "(TO_DATE('2022-"
 					+ em2 + "-" + ed2 + "') - TO_DATE('2022-" + sm2 + "-" + sd2
@@ -198,8 +198,6 @@ public class UserPageDAO extends DBConnection {
 					+ "','" + memId + "', fn_create_rsvno( '2022" + s1 + s2 + "'))";
 			int res = stat.executeUpdate(sqlStr);
 			System.out.println("예약이 완료되었습니다. ");
-
-			conn.close();
 		} catch (SQLException e) {
 			System.out.println("오라클 연결 실패");
 			e.printStackTrace();

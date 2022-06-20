@@ -28,6 +28,7 @@ public class UserPage {
 		Map<String, String> rsvResult = new HashMap<>();
 		userDto = new UserPageDTO(this.userID);
 		while (true) {
+			sc.nextLine();
 			System.out.println("=================================================================");
 			System.out.println("1:예약 2:나의 예약조회 3:회원정보수정 4:회원탈퇴 5:메인화면으로 돌아가기(로그아웃)");
 			System.out.println("=================================================================");
@@ -139,7 +140,7 @@ public class UserPage {
 		String edit = "";
 		System.out.println("==================================================");
 		System.out.println("변경할 항목을 선택해주세요.");
-		System.out.println("1.핸드폰번호  2.주소  3.비밀번호");
+		System.out.println("1.핸드폰번호  2.주소  3.비밀번호  4.뒤로가기");
 		System.out.println("==================================================");
 		select = sc.nextLine();
 		try {
@@ -168,7 +169,10 @@ public class UserPage {
 				System.out.println("변경이 완료되었습니다.");
 				edit = "";
 				res = "";
-			} else
+			}else if(num==4) {
+				
+			}
+			else
 				System.out.println("올바른메뉴를 선택해주세요");
 		} catch (Exception e) {
 			System.out.println("올바른 값을 입력해주세요");
@@ -177,16 +181,55 @@ public class UserPage {
 
 	public void makeRsv() {
 		Map<String, String> map = new HashMap<String, String>();
-		System.out.print("지역번호를 입력하세요 ");
-		String regno = sc.next();
-		System.out.print("시작 월을 입력하세요 ");
-		int a = sc.nextInt();
-		System.out.print("시작일을 입력하세요 ");
-		int b = sc.nextInt();
-		System.out.print("종료 월을 입력하세요 ");
-		int c = sc.nextInt();
-		System.out.print("종료 일을 입력하세요 ");
-		int d = sc.nextInt();
+		String regno="";
+		int a=0;
+		int b=0;
+		int c=0;
+		int d=0;
+		while(true) {
+			System.out.println("지역번호를 입력하세요(02: 서울, 042: 대전, 032: 인천, 053: 대구, 062: 광주, 052: 울산, 051: 부산, 064: 제주 ");
+			System.out.print(">>");
+			regno = sc.next();
+			if(regno.equals("02") || regno.equals("042")||regno.equals("032")|| regno.equals("053")|| regno.equals("062")
+					|| regno.equals("052")|| regno.equals("051")|| regno.equals("064")) {
+				break;
+			}
+			else {
+				System.out.println("올바른 지역번호를 입력해주세요.");
+			}
+		}
+		while(true) {
+			System.out.print("대여 달을 입력하세요 ");
+			a = sc.nextInt();
+			if(a>12 || a<1) {
+				System.out.println("잘못된 값입니다.");
+			}
+			else break;
+		}
+		while(true) {
+			System.out.print("대여 일을 입력하세요 ");
+			b = sc.nextInt();
+			if(b>31 || b<1) {
+				System.out.println("잘못된 값입니다.");
+			}
+			else break;
+		}
+		while(true) {
+			System.out.print("반납할 딜을 입력하세요 ");
+			c = sc.nextInt();
+			if(c>12 || c<1) {
+				System.out.println("잘못된 값입니다.");
+			}
+			else break;
+		}
+		while(true) {
+			System.out.print("반납 일을 입력하세요 ");
+			d = sc.nextInt();
+			if(d>31 || d<1) {
+				System.out.println("잘못된 값입니다.");
+			}
+			else break;
+		}
 		map = userDao.chkRsv(regno, a, b, c, d);
 
 		System.out.println("===================================================================================");

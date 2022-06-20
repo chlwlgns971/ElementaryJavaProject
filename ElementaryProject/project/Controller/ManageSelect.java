@@ -211,6 +211,7 @@ public class ManageSelect {
 					System.out.println("==========================================================");
 					String str = "SELECT TO_CHAR(RSV_DATE,'YYYY-MM-DD'), "
 							+ "TO_CHAR(RSV_RET,'YYYY-MM-DD'), RSV_PAY, RSV_BNO," + "RSV_CNO, RSV_ID, RSV_NO FROM RSV";
+							
 
 					manageDao.selectRsv(str);
 
@@ -218,7 +219,7 @@ public class ManageSelect {
 					System.out.println("아이디를 입력하세요.");
 					String name = sc.nextLine();
 					System.out.println("==========================================================");
-					System.out.println("      예약일            반납일        결제금액 번호   차량번호  아이디       예약번호");
+					System.out.println(" 예약일       반납일     결제금액  번호   차량번호  아이디   예약번호");
 					System.out.println("==========================================================");
 					String str = "SELECT TO_CHAR(RSV_DATE,'YYYY-MM-DD'), "
 							+ "TO_CHAR(RSV_RET,'YYYY-MM-DD'), RSV_PAY, RSV_BNO,"
